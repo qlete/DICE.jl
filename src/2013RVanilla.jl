@@ -43,7 +43,7 @@ function options(version::V2013R{VanillaFlavour};
     fₑₓ1::Float64 = 0.7, #2100 forcings of non-CO2 GHG (Wm-2)
     tocean₀::Float64 = 0.0068, #Initial lower stratum temp change (C from 1900)
     tatm₀::Float64 = 0.8, #Initial atmospheric temp change (C from 1900)
-    tatm_up::Float64 = 40, #Maximum atmospheric temp change (C from 1900)
+    tatm_up::Float64 = 40.0, #Maximum atmospheric temp change (C from 1900)
     ξ₁::Float64 = 0.098, #Climate equation coefficient for upper level
     ξ₃::Float64 = 0.088, #Transfer coefficient upper to lower stratum
     ξ₄::Float64 = 0.025, #Transfer coefficient for lower level
