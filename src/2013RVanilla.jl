@@ -43,6 +43,7 @@ function options(version::V2013R{VanillaFlavour};
     fₑₓ1::Float64 = 0.7, #2100 forcings of non-CO2 GHG (Wm-2)
     tocean₀::Float64 = 0.0068, #Initial lower stratum temp change (C from 1900)
     tatm₀::Float64 = 0.8, #Initial atmospheric temp change (C from 1900)
+    tatm_up::Float64 = 40, #Maximum atmospheric temp change (C from 1900)
     ξ₁::Float64 = 0.098, #Climate equation coefficient for upper level
     ξ₃::Float64 = 0.088, #Transfer coefficient upper to lower stratum
     ξ₄::Float64 = 0.025, #Transfer coefficient for lower level
@@ -53,7 +54,8 @@ function options(version::V2013R{VanillaFlavour};
     θ₂::Float64 = 2.8, #Exponent of control cost function
     pback::Float64 = 344.0, #Cost of backstop 2005$ per tCO2 2010
     gback::Float64 = 0.025, #Initial cost decline backstop cost per period
-    limμ::Float64 = 1.2, #Upper limit on control rate after 2150
+    limμ1::Float64 = 1.0, #Upper limit on control rate before 2150
+    limμ2::Float64 = 1.2, #Upper limit on control rate after 2150
     tnopol::Float64 = 45.0, #Period before which no emissions controls base
     cprice₀::Float64 = 1.0, #Initial base carbon price (2005$ per tCO2)
     gcprice::Float64 = 0.02, #Growth rate of base carbon price per year
@@ -85,12 +87,12 @@ function Base.show(io::IO, ::MIME"text/plain", opt::VanillaOptions)
     println(io, "ϕ₁₂: $(opt.ϕ₁₂), ϕ₂₃: $(opt.ϕ₂₃)");
     println(io, "Climate Model Parameters");
     println(io, "t2xco2: $(opt.t2xco2), fₑₓ0: $(opt.fₑₓ0), fₑₓ1: $(opt.fₑₓ1)");
-    println(io, "tocean₀: $(opt.tocean₀), tatm₀: $(opt.tatm₀), ξ₁: $(opt.ξ₁)");
+    println(io, "tocean₀: $(opt.tocean₀), tatm₀: $(opt.tatm₀), tatm_up: $(opt.tatm_up), ξ₁: $(opt.ξ₁)");
     println(io, "ξ₃: $(opt.ξ₃), ξ₄: $(opt.ξ₄), η: $(opt.η)");
     println(io, "Climate Damage Parameters");
     println(io, "ψ₁: $(opt.ψ₁), ψ₂: $(opt.ψ₂), ψ₃: $(opt.ψ₃)");
     println(io, "Abatement Cost");
-    println(io, "θ₂: $(opt.θ₂), pback: $(opt.pback), gback: $(opt.gback), limμ: $(opt.limμ)");
+    println(io, "θ₂: $(opt.θ₂), pback: $(opt.pback), gback: $(opt.gback), limμ1: $(opt.limμ1), limμ2: $(opt.limμ2)");
     println(io, "tnopol: $(opt.tnopol), cprice₀: $(opt.cprice₀), gcprice: $(opt.gcprice)");
     println(io, "Participation Parameters");
     println(io, "periodfullpart: $(opt.periodfullpart), partfract2010: $(opt.partfract2010), partfractfull: $(opt.partfractfull)");
@@ -329,7 +331,7 @@ function solve(scenario::Scenario, version::V2013R{VanillaFlavour};
     params = generate_parameters(config);
 
     # Rate limit
-    μ_ubound = [if t < 30 1.0 else config.limμ*params.partfract[t] end for t in 1:config.N];
+    μ_ubound = [if t < 30 config.limμ1 else config.limμ2*params.partfract[t] end for t in 1:config.N];
 
     cprice_ubound = assign_scenario(scenario, config, params);
     cprice_ubound[1] = params.cpricebase[1];
@@ -341,7 +343,7 @@ function solve(scenario::Scenario, version::V2013R{VanillaFlavour};
         end
     end
 
-    variables = model_vars(version, model, config.N, config.fosslim, μ_ubound, cprice_ubound);
+    variables = model_vars(version, model, config.N, config.fosslim, μ_ubound, config.tatm_up, cprice_ubound);
 
     equations = model_eqs(scenario, model, config, params, variables, isMumps);
 

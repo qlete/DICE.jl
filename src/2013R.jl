@@ -53,11 +53,11 @@ export v2013R
     CEMUTOTPER::Array{VariableRef,1} # Period utility
 end
 
-function model_vars(version::V2013R{F}, model::Model, N::Int64, cca_ubound::Float64, μ_ubound::Array{Float64,1}, cprice_ubound::Array{Float64,1}) where F <: Flavour
+function model_vars(version::V2013R{F}, model::Model, N::Int64, cca_ubound::Float64, μ_ubound::Array{Float64,1}, Tat_ubound::Float64, cprice_ubound::Array{Float64,1}) where F <: Flavour
     # Variables #
     @variable(model, 0.0 <= μ[i=1:N] <= μ_ubound[i]); # Emission control rate GHGs
     @variable(model, FORC[1:N]); # Increase in radiative forcing (watts per m2 from 1900)
-    @variable(model, 0.0 <= Tₐₜ[1:N] <= 40.0); # Increase temperature of atmosphere (degrees C from 1900)
+    @variable(model, 0.0 <= Tₐₜ[1:N] <= Tat_ubound); # Increase temperature of atmosphere (degrees C from 1900)
     @variable(model, -1.0 <= Tₗₒ[1:N] <= 20.0); # Increase temperatureof lower oceans (degrees C from 1900)
     @variable(model, Mₐₜ[1:N] >= 10.0); # Carbon concentration increase in atmosphere (GtC from 1750)
     @variable(model, Mᵤₚ[1:N] >= 100.0); # Carbon concentration increase in shallow oceans (GtC from 1750)
