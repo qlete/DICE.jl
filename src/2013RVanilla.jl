@@ -65,7 +65,7 @@ function options(version::V2013R{VanillaFlavour};
     periodfullpart::Float64 = 21.0, #Period at which have full participation
     partfract2010::Float64 = 1.0, #Fraction of emissions under control in 2010
     partfractfull::Float64 = 1.0) #Fraction of emissions under control at full time
-    VanillaOptions(N,tstep,α,ρ,γₑ,pop₀,popadj,popasym,δk,q₀,k₀,a₀,ga₀,δₐ,gσ₁,δσ,eland₀,deland,mat₀,mu₀,ml₀,mateq,mueq,mleq,ϕ₁₂,ϕ₂₃,t2xco2,fₑₓ0,fₑₓ1,tocean₀,tatm₀,ξ₁,ξ₃,ξ₄,η,ψ₁,ψ₂,ψ₃,θ₂,pback,gback,limμ,fosslim,scale1,scale2,e₀,μ₀,tnopol,cprice₀,gcprice,periodfullpart,partfract2010,partfractfull)
+    VanillaOptions(N,tstep,α,ρ,γₑ,pop₀,popadj,popasym,δk,q₀,k₀,a₀,ga₀,δₐ,gσ₁,δσ,eland₀,deland,mat₀,mu₀,ml₀,mateq,mueq,mleq,ϕ₁₂,ϕ₂₃,t2xco2,fₑₓ0,fₑₓ1,tocean₀,tatm₀,tatm_up,ξ₁,ξ₃,ξ₄,η,ψ₁,ψ₂,ψ₃,θ₂,pback,gback,limμ1,limµ2,fosslim,scale1,scale2,e₀,μ₀,tnopol,cprice₀,gcprice,periodfullpart,partfract2010,partfractfull)
 end
 
 function Base.show(io::IO, ::MIME"text/plain", opt::VanillaOptions)
