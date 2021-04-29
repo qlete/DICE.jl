@@ -30,6 +30,7 @@
     fₑₓ1::Float64 #2100 forcings of non-CO2 GHG (Wm-2)
     tocean₀::Float64 #Initial lower stratum temp change (C from 1900)
     tatm₀::Float64 #Initial atmospheric temp change (C from 1900)
+    tatm_up::Float64 #Maximum atmospheric temp change (C from 1900)
     ξ₁::Float64 #Climate equation coefficient for upper level
     ξ₃::Float64 #Transfer coefficient upper to lower stratum
     ξ₄::Float64 #Transfer coefficient for lower level
@@ -40,7 +41,8 @@
     θ₂::Float64 #Exponent of control cost function
     pback::Float64 #Cost of backstop 2005$ per tCO2 2010
     gback::Float64 #Initial cost decline backstop cost per period
-    limμ::Float64 #Upper limit on control rate after 2150
+    limμ1::Float64 #Upper limit on control rate before 2150
+    limμ2::Float64 #Upper limit on control rate after 2150
     fosslim::Float64 #Maximum cumulative extraction fossil fuels (GtC)
     scale1::Float64 #Multiplicative scaling coefficient
     scale2::Float64 #Additive scaling coefficient
